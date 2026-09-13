@@ -1,1 +1,1 @@
-Please check wpf_calculator_MVP for working version of task
+Please check  pizza_split_MVP for working version of task
