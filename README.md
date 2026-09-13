@@ -1,1 +1,1 @@
-Please check  pizzasplit/wpfapp_mvpfor working version of task
+Please check  pizzasplit/wpfapp_mvp for working version of task
