@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="KiviPaber.Core/KiviPaber.Core.csproj" />
+  <Project Path="KiviPaber.WpfApp/KiviPaber.WpfApp.csproj" />
+</Solution>
