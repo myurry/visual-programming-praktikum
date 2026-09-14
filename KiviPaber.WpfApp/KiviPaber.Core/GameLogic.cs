@@ -2,6 +2,8 @@
 {
     public static class GameLogic
     {
+
+        
         public static Move GetComputerMove()
         {
             // Simple AI logic - randomly select a move
@@ -26,7 +28,7 @@
                 case Move.Scissors:
                     return computerMove == Move.Paper ? RoundResult.Win : RoundResult.Lose;
                 default:
-                    throw new ArgumentException("Invalid move");
+                    throw new GameStates.InvalidMoveException("Invalid move");
             }
         }
     }

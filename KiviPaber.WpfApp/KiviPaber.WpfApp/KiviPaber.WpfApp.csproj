@@ -8,4 +8,24 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\KiviPaber.Core.ViewModels\KiviPaber.Core.ViewModels.csproj" />
+    <ProjectReference Include="..\KiviPaber.Core\KiviPaber.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="GameStates.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GameStates.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="GameStates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameStates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

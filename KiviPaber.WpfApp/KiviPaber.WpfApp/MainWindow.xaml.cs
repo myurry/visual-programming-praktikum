@@ -1,24 +1,33 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using KiviPaber.Core;
+using KiviPaber.Core.ViewModels;
 
 namespace KiviPaber.WpfApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private BattleViewModel VM => (BattleViewModel)DataContext;
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new BattleViewModel();
         }
+
+        private void RockButton_Click(object sender, RoutedEventArgs e)
+        {
+            VM.PlayRound(Move.Rock);
+        }
+
+        private void PaperButton_Click(object sender, RoutedEventArgs e)
+        {
+            VM.PlayRound(Move.Paper);
+        }
+
+        private void ScissorsButton_Click(object sender, RoutedEventArgs e)
+        {
+            VM.PlayRound(Move.Scissors);
+        }
+
     }
 }
