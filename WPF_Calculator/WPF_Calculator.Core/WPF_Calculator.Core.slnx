@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="WPF_Calculator.Core/WPF_Calculator.Core.csproj" />
+  <Project Path="WPF_Calculcator.WpfApp/WPF_Calculcator.WpfApp.csproj" Id="dd0e01f2-0e2d-4905-a1e0-b811447d1e4a" />
+</Solution>

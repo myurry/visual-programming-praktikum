@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PizzaSplit.Core;
 
 namespace PizzaSplit.WpfApp_MVP
 {
@@ -15,7 +16,7 @@ namespace PizzaSplit.WpfApp_MVP
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// 
-    using PizzaSplit.Core;
+    
 
     public partial class MainWindow : Window
     {
@@ -43,11 +44,7 @@ namespace PizzaSplit.WpfApp_MVP
                 bool addTip = tipBox.IsChecked == true;
 
                 // Perform the calculation
-                float totalCost = costPerPerson * numberOfPeople;
-                if (addTip)
-                {
-                    totalCost *= 1.1f; // Add 10% tip
-                }
+                float totalCost = BillCalculator.EvaluateBill(costPerPerson, numberOfPeople, addTip);
 
                 resultLabel.Content = "Result: $" + totalCost.ToString("F2");
             }

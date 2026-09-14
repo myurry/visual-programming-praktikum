@@ -1,0 +1,41 @@
+﻿<Window x:Class="WPF_Calculcator.WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_Calculcator.WpfApp"
+        mc:Ignorable="d"
+        Title="Electricity Cost" Height="240" Width="360">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Device power (W) -->
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Content="Device power (W):"/>
+        <TextBox x:Name="PowerTextBox" Grid.Row="0" Grid.Column="1" Margin="6,4" />
+
+        <!-- Hours per day -->
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="Hours per day:"/>
+        <TextBox x:Name="HoursTextBox" Grid.Row="1" Grid.Column="1" Margin="6,4" />
+
+        <!-- Price (€/kWh) -->
+        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Content="Price (€/kWh):"/>
+        <TextBox x:Name="PriceTextBox" Grid.Row="2" Grid.Column="1" Margin="6,4" />
+
+        <!-- Calculate button -->
+        <Button x:Name="CalculateButton" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,10,0,0" Content="Calculate (30 days)" HorizontalAlignment="Right" Width="140" Click="CalculateButton_Click"/>
+
+        <!-- Result -->
+        <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Content="Cost (30 days):"/>
+        <TextBlock x:Name="ResultTextBlock" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="6,4" Text="€0.00"/>
+    </Grid>
+</Window>
