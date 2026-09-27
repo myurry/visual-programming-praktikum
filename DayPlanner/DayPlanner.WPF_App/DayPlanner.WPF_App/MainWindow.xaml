@@ -1,0 +1,119 @@
+﻿<Window x:Class="DayPlanner.WPF_App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Daily Planner" Height="520" Width="720"
+        WindowStartupLocation="CenterScreen"
+        Background="#FFF6F8FB"
+        FontFamily="Segoe UI">
+    <Window.Resources>
+        <!-- Palette -->
+        <SolidColorBrush x:Key="AccentBrush" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="SoftText" Color="#333333"/>
+        <SolidColorBrush x:Key="MutedText" Color="#6B7280"/>
+        <SolidColorBrush x:Key="PanelBackground" Color="#FFFFFFFF"/>
+        <SolidColorBrush x:Key="Divider" Color="#E6E9EE"/>
+
+        <!-- Proper drop shadow effect resource -->
+        <DropShadowEffect x:Key="PanelShadow"
+                          Color="#55000000"
+                          BlurRadius="10"
+                          ShadowDepth="2"
+                          Opacity="0.25" />
+
+        <!-- Subtle ruled-paper background for content -->
+        <DrawingBrush x:Key="RuledLines" TileMode="Tile" Viewport="0,0,1,40" ViewportUnits="Absolute" Viewbox="0,0,1,40" ViewboxUnits="Absolute">
+            <DrawingBrush.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing Brush="Transparent">
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,1,40"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="{StaticResource Divider}">
+                        <GeometryDrawing.Geometry>
+                            <LineGeometry StartPoint="0,39.5" EndPoint="1000,39.5"/>
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingBrush.Drawing>
+        </DrawingBrush>
+
+        <!-- Button base style for header -->
+        <Style x:Key="HeaderButtonBase" TargetType="Button">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource SoftText}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <!-- Accent button -->
+        <Style x:Key="AccentButton" TargetType="Button" BasedOn="{StaticResource HeaderButtonBase}">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="32"/>
+        </Style>
+
+        <!-- Implicit TextBlock styling -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource SoftText}"/>
+        </Style>
+
+        <!-- Simple Border style for list items -->
+        <Style x:Key="ListItemBorder" TargetType="Border">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Margin" Value="6,6,6,0"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Background="{StaticResource PanelBackground}"
+                CornerRadius="8"
+                Padding="12"
+                Effect="{StaticResource PanelShadow}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Tasks for today" FontSize="18" FontWeight="SemiBold" />
+                    <TextBlock Text="Plan your day — quick and light" FontSize="12" Foreground="{StaticResource MutedText}" />
+                </StackPanel>
+
+                <Button Grid.Column="1" Name="BtnAdd" Style="{StaticResource AccentButton}" Click="BtnAdd_Click" VerticalAlignment="Center">
+                    Add new task
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- Spacer -->
+        <Rectangle Grid.Row="1" Height="0" Fill="Transparent"/>
+
+        <!-- Content panel -->
+        <Border Grid.Row="2"
+                Background="{StaticResource PanelBackground}"
+                CornerRadius="10"
+                Padding="10"
+                Effect="{StaticResource PanelShadow}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Background="{StaticResource RuledLines}">
+                <StackPanel Name="NotesPanel" Orientation="Vertical" />
+            </ScrollViewer>
+        </Border>
+    </Grid>
+</Window>

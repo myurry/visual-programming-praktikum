@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="DayPlanner.Core/DayPlanner.Core.csproj" />
+  <Project Path="DayPlanner.WPF_App/DayPlanner.WPF_App.csproj" />
+</Solution>
