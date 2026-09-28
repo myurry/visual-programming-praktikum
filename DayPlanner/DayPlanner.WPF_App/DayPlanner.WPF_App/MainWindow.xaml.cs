@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DayPlanner.Core;
 
 namespace DayPlanner.WPF_App
 {
@@ -28,9 +28,10 @@ namespace DayPlanner.WPF_App
                 var note = new NoteItem
                 {
                     Id = Guid.NewGuid(),
-                    Text = dlg.NoteText,
+                    Text = dlg.NoteText,                    // keep main text separate
                     Time = dlg.NoteTime,
-                    ColorHex = "#FFFFFF" // not used visually for notepad style
+                    ColorHex = "#FFFFFF",                   // not used visually for notepad style
+                    Type = dlg.NoteType                      // store enum value
                 };
 
                 _notes.Add(note);
@@ -58,10 +59,11 @@ namespace DayPlanner.WPF_App
                 Background = Brushes.White
             };
 
-            // Grid with two columns: time on left, text on right
+            // Grid with three columns: time on left, text in middle, type on right
             var grid = new Grid { HorizontalAlignment = HorizontalAlignment.Stretch };
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(90) }); // time column
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto }); // type column (auto width)
 
             var timeText = new TextBlock
             {
@@ -69,7 +71,7 @@ namespace DayPlanner.WPF_App
                 VerticalAlignment = VerticalAlignment.Center,
                 FontFamily = new FontFamily("Consolas"),
                 Foreground = new SolidColorBrush(Color.FromRgb(70, 70, 70)),
-                Margin = new Thickness(0,0,8,0)
+                Margin = new Thickness(0, 0, 8, 0)
             };
             Grid.SetColumn(timeText, 0);
 
@@ -83,8 +85,21 @@ namespace DayPlanner.WPF_App
             };
             Grid.SetColumn(descText, 1);
 
+            var typeText = new TextBlock
+            {
+                Text = n.Type.ToString(),
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                FontFamily = new FontFamily("Segoe UI"),
+                Foreground = new SolidColorBrush(Color.FromRgb(120, 120, 120)),
+                FontStyle = FontStyles.Italic,
+                Margin = new Thickness(8, 0, 0, 0)
+            };
+            Grid.SetColumn(typeText, 2);
+
             grid.Children.Add(timeText);
             grid.Children.Add(descText);
+            grid.Children.Add(typeText);
 
             outer.Child = grid;
 
@@ -106,6 +121,7 @@ namespace DayPlanner.WPF_App
                 var dlg = new AddNoteWindow { Owner = this, IsEditMode = true };
                 dlg.TxtText.Text = _selected.Text;
                 dlg.TxtTime.Text = _selected.Time.ToString(@"hh\:mm");
+                dlg.CmbType.Text = _selected.Type.ToString(); // pre-select the type for editing
 
                 var result = dlg.ShowDialog();
 
@@ -121,6 +137,7 @@ namespace DayPlanner.WPF_App
                 {
                     _selected.Text = dlg.NoteText;
                     _selected.Time = dlg.NoteTime;
+                    _selected.Type = dlg.NoteType; // update stored enum value
                     RefreshNotes();
                 }
             }
@@ -132,6 +149,7 @@ namespace DayPlanner.WPF_App
             public string Text { get; set; } = string.Empty;
             public TimeSpan Time { get; set; } = TimeSpan.Zero;
             public string ColorHex { get; set; } = "#FFFFFF";
+            public NoteType Type { get; set; } = NoteType.None;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 
 using DayPlanner.Core;
 
@@ -10,6 +11,8 @@ namespace DayPlanner.WPF_App
         // Ensure non-null defaults to satisfy nullable analysis
         public string NoteText { get; private set; } = string.Empty;
         public TimeSpan NoteTime { get; private set; } = TimeSpan.Zero;
+        // New note type (matches CmbType items)
+        public NoteType NoteType { get; private set; } = NoteType.None;
 
         // Flags used by MainWindow
         public bool IsEditMode { get; set; } = false;
@@ -30,6 +33,22 @@ namespace DayPlanner.WPF_App
 
             NoteText = TxtText.Text.Trim();
             NoteTime = time;
+
+            // Read selected type from ComboBox (supports ComboBoxItem or free text) and parse to enum from DayPlanner.Core.Enums.cs
+            var typeText = string.Empty;
+            if (CmbType.SelectedItem is ComboBoxItem cbi)
+                typeText = (cbi.Content ?? string.Empty).ToString().Trim();
+            else
+                typeText = (CmbType.Text ?? string.Empty).Trim();
+
+            if (!Enum.TryParse<DayPlanner.Core.NoteType>(typeText, true, out var parsedType))
+            {
+                MessageBox.Show($"Invalid note type: '{typeText}'. Please select a valid type.", "Validation", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            NoteType = parsedType;
+
             DialogResult = true;
             Close();
         }

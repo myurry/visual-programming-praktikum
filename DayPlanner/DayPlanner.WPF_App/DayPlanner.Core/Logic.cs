@@ -13,7 +13,7 @@ namespace DayPlanner.Core
 
             if (string.IsNullOrWhiteSpace(text))
             {
-                errorMessage = Errors.TextIsEmptyMessage; // if you also add this to Errors.resx, otherwise keep literal
+                errorMessage = Errors.TextIsEmptyMessage; 
                 return false;
             }
 
