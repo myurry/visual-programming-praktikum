@@ -35,9 +35,22 @@ namespace RpsTournament.Core.ViewModels
         private int _playerScore;
         private int _computerScore;
         private string _seriesWinner = string.Empty;
+        private string _playerName = "Player";
         private readonly Random _rng = new Random();
 
         // UI bindings
+        public string PlayerName
+        {
+            get => _playerName;
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value)) return;
+                // enforce min/max length at VM level too
+                if (value.Length < 2 || value.Length > 30) return;
+                SetProperty(ref _playerName, value);
+            }
+        }
+
         public int PlayerScore
         {
             get => _playerScore;
@@ -64,15 +77,24 @@ namespace RpsTournament.Core.ViewModels
         public ICommand ClearCommand { get; }
         public ICommand NewRoundCommand { get; }
 
-        public BattleViewModel()
+        public BattleViewModel() : this("Player") { }
+
+        public BattleViewModel(string playerName)
         {
-            PlayCommand = new RelayCommand(param => {
+            PlayCommand = new RelayCommand(param =>
+            {
                 if (param is Move m) PlayRound(m);
                 else if (param is string s && Enum.TryParse<Move>(s, true, out var parsed)) PlayRound(parsed);
             });
 
             ClearCommand = new RelayCommand(_ => ClearLog());
             NewRoundCommand = new RelayCommand(_ => ResetSeries());
+
+            // set player name if valid
+            if (!string.IsNullOrWhiteSpace(playerName) && playerName.Length >= 2 && playerName.Length <= 30)
+            {
+                _playerName = playerName;
+            }
         }
 
         private void PlayRound(Move playerMove)
@@ -112,11 +134,11 @@ namespace RpsTournament.Core.ViewModels
 
             if (_seriesRoundCount >= 5)
             {
-                if (_playerScore > _computerScore) SeriesWinner = "Player wins the series";
+                if (_playerScore > _computerScore) SeriesWinner = $"{PlayerName} wins the series";
                 else if (_computerScore > _playerScore) SeriesWinner = "Computer wins the series";
                 else
                 {
-                    if (_rng.Next(2) == 0) SeriesWinner = "Player wins the series (tie-break)";
+                    if (_rng.Next(2) == 0) SeriesWinner = $"{PlayerName} wins the series (tie-break)";
                     else SeriesWinner = "Computer wins the series (tie-break)";
                 }
 

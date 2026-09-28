@@ -123,4 +123,10 @@
   <data name="InvalidMoveException" xml:space="preserve">
     <value>ERROR: MOVE DOESN'T EXIST</value>
   </data>
+  <data name="LongNameError" xml:space="preserve">
+    <value>Name is too long (more than 30 symbols).</value>
+  </data>
+  <data name="ShortNameError" xml:space="preserve">
+    <value>Name is too short (less than 2 symbols).</value>
+  </data>
 </root>

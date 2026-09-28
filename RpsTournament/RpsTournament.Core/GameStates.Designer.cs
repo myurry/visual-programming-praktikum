@@ -77,5 +77,23 @@ namespace RpsTournament.Core {
                 return ResourceManager.GetString("InvalidMoveException", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is too long (more than 30 symbols)..
+        /// </summary>
+        internal static string LongNameError {
+            get {
+                return ResourceManager.GetString("LongNameError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is too short (less than 2 symbols)..
+        /// </summary>
+        internal static string ShortNameError {
+            get {
+                return ResourceManager.GetString("ShortNameError", resourceCulture);
+            }
+        }
     }
 }
