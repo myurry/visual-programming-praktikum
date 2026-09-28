@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KiviPaber.Core
+namespace RpsTournament.Core
 {
     public enum Move
     {

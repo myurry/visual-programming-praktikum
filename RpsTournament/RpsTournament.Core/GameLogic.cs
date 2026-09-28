@@ -1,14 +1,16 @@
-﻿namespace KiviPaber.Core
+﻿using System;
+using static RpsTournament.Core.GameStates;
+
+namespace RpsTournament.Core
 {
     public static class GameLogic
     {
+        // reuse a single Random instance to avoid repeated seeds
+        private static readonly Random _random = new Random();
 
-        
         public static Move GetComputerMove()
         {
-            // Simple AI logic - randomly select a move
-            Random random = new Random();
-            int moveIndex = random.Next(0, 3);
+            int moveIndex = _random.Next(0, 3);
             return (Move)moveIndex;
         }
 
@@ -28,7 +30,7 @@
                 case Move.Scissors:
                     return computerMove == Move.Paper ? RoundResult.Win : RoundResult.Lose;
                 default:
-                    throw new GameStates.InvalidMoveException("Invalid move");
+                    throw new Exception(InvalidMoveException);
             }
         }
     }

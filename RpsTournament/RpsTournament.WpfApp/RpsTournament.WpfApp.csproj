@@ -8,4 +8,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RpsTournament.Core\RpsTournament.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,6 @@
+<Window x:Class="RpsTournament.WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RPS Tournament" Height="720" Width="1100" Background="White">
+    <Grid />
+</Window>
