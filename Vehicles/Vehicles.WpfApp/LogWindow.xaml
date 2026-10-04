@@ -1,0 +1,10 @@
+﻿<Window x:Class="Vehicles.WpfApp.LogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Vehicle Log Details" Height="350" Width="500"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="15">
+        <TextBlock x:Name="TxtHeader" Text="Vehicle Activity Log" FontSize="16" FontWeight="Bold" DockPanel.Dock="Top" Margin="0,0,0,10"/>
+        <ListBox x:Name="LstLogs" Background="#F9F9F9" Padding="5"/>
+    </DockPanel>
+</Window>

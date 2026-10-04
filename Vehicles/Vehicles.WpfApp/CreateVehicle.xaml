@@ -1,0 +1,24 @@
+﻿<Window x:Class="Vehicles.WpfApp.CreateVehicle"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add New Vehicle" Height="260" Width="380"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Margin="15">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Vehicle Name:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <TextBox x:Name="TxtName" Height="28" Padding="3" VerticalContentAlignment="Center" Margin="0,0,0,15"/>
+
+            <TextBlock Text="Vehicle Type:" FontWeight="SemiBold" Margin="0,0,0,5"/>
+            <ComboBox x:Name="CmbType" Height="28" SelectedIndex="0" Margin="0,0,0,20">
+                <ComboBoxItem Content="Car"/>
+                <ComboBoxItem Content="Boat"/>
+                <ComboBoxItem Content="AmphibiousCar"/>
+            </ComboBox>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Cancel" Width="80" Height="30" Margin="0,0,10,0" IsCancel="True"/>
+                <Button Content="Create" Width="90" Height="30" Click="Create_Click" IsDefault="True"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
