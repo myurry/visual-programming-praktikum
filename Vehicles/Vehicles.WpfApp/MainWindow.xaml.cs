@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using Vehicles.Core;
 
@@ -9,7 +8,6 @@ namespace Vehicles.WpfApp
 {
     public partial class MainWindow : Window
     {
-        // ObservableCollection automatically refreshes UI list when items are added
         public ObservableCollection<Vehicle> Vehicles { get; } = new ObservableCollection<Vehicle>();
 
         public MainWindow()
@@ -18,57 +16,71 @@ namespace Vehicles.WpfApp
             LstVehicles.ItemsSource = Vehicles;
         }
 
-        // 1. Open CreateVehicle dialog
         private void AddVehicle_Click(object sender, RoutedEventArgs e)
         {
-            CreateVehicle dialog = new CreateVehicle();
-            dialog.Owner = this;
-
+            CreateVehicle dialog = new CreateVehicle { Owner = this };
             if (dialog.ShowDialog() == true && dialog.CreatedVehicle != null)
             {
                 Vehicles.Add(dialog.CreatedVehicle);
             }
         }
 
-
-
-        private void MoveItem_Click(object sender, RoutedEventArgs e)
+        // Action: Standalone Drive command
+        private void DriveItem_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button moveBtn && moveBtn.Tag is Vehicle vehicle)
+            if (sender is Button btn && btn.Tag is IDrivable drivable)
             {
-                // Traverse visual tree to find the TxtItemSteps TextBox inside the same row
-                DependencyObject parent = VisualTreeHelper.GetParent(moveBtn);
-                while (parent != null && !(parent is Grid))
+                if (TryGetSteps(btn, out int steps))
                 {
-                    parent = VisualTreeHelper.GetParent(parent);
-                }
-
-                if (parent is Grid rowGrid)
-                {
-                    TextBox stepsBox = rowGrid.FindName("TxtItemSteps") as TextBox;
-
-                    if (stepsBox != null && int.TryParse(stepsBox.Text, out int steps))
-                    {
-                        vehicle.Move(steps);
-                        LstVehicles.Items.Refresh(); // Refresh UI to display new mileage
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please enter a valid integer for steps.", "Invalid Steps", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    }
+                    drivable.Drive(steps);
+                    LstVehicles.Items.Refresh();
                 }
             }
         }
 
-        // 3. Open LogWindow on vehicle item click/double-click
-        private void LstVehicles_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        // Action: Standalone Swim command
+        private void SwimItem_Click(object sender, RoutedEventArgs e)
         {
-            if (LstVehicles.SelectedItem is Vehicle selectedVehicle)
+            if (sender is Button btn && btn.Tag is ISwimmable swimmable)
             {
-                LogWindow logWin = new LogWindow(selectedVehicle);
-                logWin.Owner = this;
+                if (TryGetSteps(btn, out int steps))
+                {
+                    swimmable.Swim(steps);
+                    LstVehicles.Items.Refresh();
+                }
+            }
+        }
+
+        // Action: View Vehicle Log Window via Log Button
+        private void ViewLogItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is Vehicle vehicle)
+            {
+                LogWindow logWin = new LogWindow(vehicle) { Owner = this };
                 logWin.ShowDialog();
             }
+        }
+
+        // Helper to retrieve step input from row
+        private bool TryGetSteps(Button button, out int steps)
+        {
+            steps = 0;
+            DependencyObject parent = VisualTreeHelper.GetParent(button);
+            while (parent != null && !(parent is Grid))
+            {
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+
+            if (parent is Grid rowGrid && rowGrid.FindName("TxtItemSteps") is TextBox stepsBox)
+            {
+                if (int.TryParse(stepsBox.Text, out steps))
+                {
+                    return true;
+                }
+            }
+
+            MessageBox.Show("Please enter a valid integer number of steps.", "Invalid Steps", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
         }
     }
 }

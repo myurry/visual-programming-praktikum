@@ -5,12 +5,12 @@ namespace Vehicles.Core
 {
     public interface IDrivable
     {
-        string Drive(int steps);
+        void Drive(int steps);
     }
 
     public interface ISwimmable
     {
-        string Swim(int steps);
+        void Swim(int steps);
     }
 
     public abstract class Vehicle
@@ -19,6 +19,10 @@ namespace Vehicles.Core
         public int Mileage { get; protected set; }
         public List<string> Log { get; } = new List<string>();
         public string VehicleType => GetType().Name;
+
+        // UI capabilities helpers to show/hide Drive and Swim buttons dynamically
+        public bool IsDrivable => this is IDrivable;
+        public bool IsSwimmable => this is ISwimmable;
 
         protected Vehicle(string name)
         {
@@ -32,7 +36,7 @@ namespace Vehicles.Core
         {
             if (steps <= 0)
             {
-                Log.Add($"[{DateTime.Now:HH:mm:ss}] Error ({Name}): Invalid move attempt ({steps} steps). State unchanged.");
+                Log.Add($"[{DateTime.Now:HH:mm:ss}] Error ({Name}): Invalid movement attempt ({steps} steps). State unchanged.");
                 return false;
             }
             return true;
@@ -48,51 +52,67 @@ namespace Vehicles.Core
     {
         public Car(string name) : base(name) { }
 
-        public string Drive(int steps) => $"{Name} (Car) drove {steps} steps on land.";
-
-        public override void Move(int steps)
+        public void Drive(int steps)
         {
             if (!ValidateSteps(steps)) return;
 
             Mileage += steps;
-            string message = $"[{DateTime.Now:HH:mm:ss}] " + Drive(steps);
+            string message = $"[{DateTime.Now:HH:mm:ss}] {Name} (Car) drove {steps} steps on land.";
             Log.Add(message);
             Console.WriteLine(message);
         }
+
+        public override void Move(int steps) => Drive(steps);
     }
 
     public class Boat : Vehicle, ISwimmable
     {
         public Boat(string name) : base(name) { }
 
-        public string Swim(int steps) => $"{Name} (Boat) swam {steps} steps in water.";
-
-        public override void Move(int steps)
+        public void Swim(int steps)
         {
             if (!ValidateSteps(steps)) return;
 
             Mileage += steps;
-            string message = $"[{DateTime.Now:HH:mm:ss}] " + Swim(steps);
+            string message = $"[{DateTime.Now:HH:mm:ss}] {Name} (Boat) swam {steps} steps in water.";
             Log.Add(message);
             Console.WriteLine(message);
         }
+
+        public override void Move(int steps) => Swim(steps);
     }
 
     public class AmphibiousCar : Vehicle, IDrivable, ISwimmable
     {
         public AmphibiousCar(string name) : base(name) { }
 
-        public string Drive(int steps) => $"{Name} (AmphibiousCar) drove {steps} steps on land.";
-        public string Swim(int steps) => $"{Name} (AmphibiousCar) swam {steps} steps through water.";
+        public void Drive(int steps)
+        {
+            if (!ValidateSteps(steps)) return;
+
+            Mileage += steps;
+            string message = $"[{DateTime.Now:HH:mm:ss}] {Name} (AmphibiousCar) drove {steps} steps on land.";
+            Log.Add(message);
+            Console.WriteLine(message);
+        }
+
+        public void Swim(int steps)
+        {
+            if (!ValidateSteps(steps)) return;
+
+            Mileage += steps;
+            string message = $"[{DateTime.Now:HH:mm:ss}] {Name} (AmphibiousCar) swam {steps} steps through water.";
+            Log.Add(message);
+            Console.WriteLine(message);
+        }
 
         public override void Move(int steps)
         {
             if (!ValidateSteps(steps)) return;
 
-            Mileage += steps;
-            string message = $"[{DateTime.Now:HH:mm:ss}] {Drive(steps / 2)} and {Swim(steps - steps / 2)}";
-            Log.Add(message);
-            Console.WriteLine(message);
+            // General Move triggers a combined amphibious journey
+            Drive(steps / 2);
+            Swim(steps - steps / 2);
         }
     }
 }
