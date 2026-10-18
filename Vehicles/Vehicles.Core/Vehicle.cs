@@ -20,7 +20,6 @@ namespace Vehicles.Core
         public List<string> Log { get; } = new List<string>();
         public string VehicleType => GetType().Name;
 
-        // UI capabilities helpers to show/hide Drive and Swim buttons dynamically
         public bool IsDrivable => this is IDrivable;
         public bool IsSwimmable => this is ISwimmable;
 
@@ -30,13 +29,18 @@ namespace Vehicles.Core
             Log.Add($"[{DateTime.Now:HH:mm:ss}] Created vehicle '{Name}'.");
         }
 
+        public void LogMessage(string message)
+        {
+            Log.Add($"[{DateTime.Now:HH:mm:ss}] {message}");
+        }
+
         public abstract void Move(int steps);
 
         protected bool ValidateSteps(int steps)
         {
             if (steps <= 0)
             {
-                Log.Add($"[{DateTime.Now:HH:mm:ss}] Error ({Name}): Invalid movement attempt ({steps} steps). State unchanged.");
+                LogMessage($"Error ({Name}): Invalid movement attempt ({steps} steps). State unchanged.");
                 return false;
             }
             return true;

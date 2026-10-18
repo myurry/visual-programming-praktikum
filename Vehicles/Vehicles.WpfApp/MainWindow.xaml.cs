@@ -8,12 +8,15 @@ namespace Vehicles.WpfApp
 {
     public partial class MainWindow : Window
     {
-        public ObservableCollection<Vehicle> Vehicles { get; } = new ObservableCollection<Vehicle>();
+        public ObservableCollection<Vehicle> Cars { get; } = new ObservableCollection<Vehicle>();
+        public ObservableCollection<Vehicle> Boats { get; } = new ObservableCollection<Vehicle>();
 
         public MainWindow()
         {
             InitializeComponent();
-            LstVehicles.ItemsSource = Vehicles;
+
+            LstCars.ItemsSource = Cars;
+            LstBoats.ItemsSource = Boats;
         }
 
         private void AddVehicle_Click(object sender, RoutedEventArgs e)
@@ -21,7 +24,53 @@ namespace Vehicles.WpfApp
             CreateVehicle dialog = new CreateVehicle { Owner = this };
             if (dialog.ShowDialog() == true && dialog.CreatedVehicle != null)
             {
-                Vehicles.Add(dialog.CreatedVehicle);
+                var vehicle = dialog.CreatedVehicle;
+
+                
+                if (vehicle is Boat && !(vehicle is Car))
+                {
+                    
+                    foreach (var existingBoat in Boats)
+                    {
+                        existingBoat.LogMessage($"{vehicle.Name}({vehicle.VehicleType}) did a welcoming *beep-beep*");
+                    }
+                    Boats.Add(vehicle);
+                }
+                else
+                {
+                    
+                    foreach (var existingCar in Cars)
+                    {
+                        existingCar.LogMessage($"{vehicle.Name}({vehicle.VehicleType}) did a welcoming *beep-beep*");
+                    }
+                    Cars.Add(vehicle);
+                }
+            }
+        }
+
+        // Action: Remove Vehicle from list
+        private void RemoveItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.Tag is Vehicle vehicle)
+            {
+                if (Cars.Contains(vehicle))
+                {
+                    Cars.Remove(vehicle);
+                    
+                    foreach (var remainingCar in Cars)
+                    {
+                        remainingCar.LogMessage($"{vehicle.Name}({vehicle.VehicleType}) flashed their lights in goodbye");
+                    }
+                }
+                else if (Boats.Contains(vehicle))
+                {
+                    Boats.Remove(vehicle);
+                    
+                    foreach (var remainingBoat in Boats)
+                    {
+                        remainingBoat.LogMessage($"{vehicle.Name}({vehicle.VehicleType}) flashed their lights in goodbye");
+                    }
+                }
             }
         }
 
@@ -33,7 +82,8 @@ namespace Vehicles.WpfApp
                 if (TryGetSteps(btn, out int steps))
                 {
                     drivable.Drive(steps);
-                    LstVehicles.Items.Refresh();
+                    LstCars.Items.Refresh();
+                    LstBoats.Items.Refresh();
                 }
             }
         }
@@ -46,7 +96,8 @@ namespace Vehicles.WpfApp
                 if (TryGetSteps(btn, out int steps))
                 {
                     swimmable.Swim(steps);
-                    LstVehicles.Items.Refresh();
+                    LstCars.Items.Refresh();
+                    LstBoats.Items.Refresh();
                 }
             }
         }
